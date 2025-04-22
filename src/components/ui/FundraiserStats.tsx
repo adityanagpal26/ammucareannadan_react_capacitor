@@ -32,31 +32,15 @@ const FundraiserStats = ({ stats, locationName }: FundraiserStatsProps) => {
     });
   }
   
-  const container = {
-    hidden: { opacity: 0 },
-    show: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.1,
-      },
-    },
-  };
-  
-  const item = {
-    hidden: { opacity: 0, y: 20 },
-    show: { opacity: 1, y: 0 },
-  };
-  
   return (
     <motion.div
       className="mt-6 mb-8"
-      variants={container}
-      initial="hidden"
-      animate="show"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.3 }}
     >
-      <motion.div
+      <div
         className="bg-primary-50 p-4 rounded-lg border border-primary-100 mb-4"
-        variants={item}
       >
         <div className="flex items-center">
           <div className="p-2 bg-primary-100 rounded-full mr-3">
@@ -67,14 +51,13 @@ const FundraiserStats = ({ stats, locationName }: FundraiserStatsProps) => {
             <p className="text-xl font-bold text-primary-700">{Number(totalMeals).toLocaleString()}</p>
           </div>
         </div>
-      </motion.div>
+      </div>
       
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
         {statItems.map((stat, index) => (
-          <motion.div
+          <div
             key={index}
             className="bg-white p-4 rounded-lg border border-neutral-200"
-            variants={item}
           >
             <div className="flex items-center">
               <div className="p-2 bg-primary-50 rounded-full mr-3">
@@ -85,7 +68,7 @@ const FundraiserStats = ({ stats, locationName }: FundraiserStatsProps) => {
                 <p className="text-lg font-bold text-neutral-800">{stat.value}</p>
               </div>
             </div>
-          </motion.div>
+          </div>
         ))}
       </div>
     </motion.div>

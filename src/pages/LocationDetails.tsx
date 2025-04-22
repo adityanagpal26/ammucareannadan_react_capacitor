@@ -9,8 +9,34 @@ import Container from '../components/common/Container';
 import Button from '../components/common/Button';
 import FundraiserStats from '../components/ui/FundraiserStats';
 import ImageGallery from '../components/ui/ImageGallery';
-import HowItWorks from '../components/ui/HowItWorks';
 import AlertDialog from '../components/common/AlertDialog';
+import { useInView } from 'react-intersection-observer';
+
+// Define a custom type for the ProgressBar component
+interface ProgressBarProps {
+  percentage: number;
+}
+
+const ProgressBar = ({ percentage }: ProgressBarProps) => {
+  // Set up the InView hook with a threshold of 0.1 and triggerOnce true
+  // This means the animation will start when 10% of the element is visible
+  // and will only trigger once (won't re-animate if scrolled out of view and back)
+  const { ref, inView } = useInView({
+    triggerOnce: true,
+    threshold: 0.1
+  });
+  
+  return (
+    <motion.div
+      ref={ref}
+      className="absolute h-full bg-gradient-to-r from-primary-400 to-primary-600"
+      style={{ width: `${percentage}%` }}
+      initial={{ width: 0 }}
+      animate={{ width: inView ? `${percentage}%` : 0 }}
+      transition={{ duration: 1.2, ease: "easeOut" }}
+    />
+  );
+};
 
 // Define a custom type for the AnimatedCounter component
 interface AnimatedCounterProps {
@@ -22,41 +48,48 @@ interface AnimatedCounterProps {
 const AnimatedCounter = ({ from = 0, to = 0, duration = 1.2 }: AnimatedCounterProps) => {
   const [count, setCount] = useState(from);
   const controls = useAnimation();
+  const { ref, inView } = useInView({
+    triggerOnce: true,
+    threshold: 0.3
+  });
   const rounded = Math.round;
 
   useEffect(() => {
-    // Create animation that updates our state
-    const animation = {
-      value: [from, to],
-      transition: { duration, ease: 'easeOut' }
-    };
+    // Only start animation when element is in view
+    if (inView) {
+      // Create animation that updates our state
+      const animation = {
+        value: [from, to],
+        transition: { duration, ease: 'easeOut' }
+      };
 
-    // Start the animation and update the count state during animation
-    let cleanup: any;
-    controls.start(animation).then(() => setCount(to));
-    
-    // Use a separate animation to update the count state during the animation
-    let startTime = Date.now();
-    const updateCount = () => {
-      const elapsed = Date.now() - startTime;
-      const progress = Math.min(elapsed / (duration * 1000), 1);
-      const currentCount = from + progress * (to - from);
-      setCount(currentCount);
+      // Start the animation and update the count state during animation
+      let cleanup: any;
+      controls.start(animation).then(() => setCount(to));
       
-      if (progress < 1) {
-        cleanup = requestAnimationFrame(updateCount);
-      }
-    };
-    
-    cleanup = requestAnimationFrame(updateCount);
-    
-    return () => {
-      if (cleanup) cancelAnimationFrame(cleanup);
-    };
-  }, [from, to, duration, controls]);
+      // Use a separate animation to update the count state during the animation
+      let startTime = Date.now();
+      const updateCount = () => {
+        const elapsed = Date.now() - startTime;
+        const progress = Math.min(elapsed / (duration * 1000), 1);
+        const currentCount = from + progress * (to - from);
+        setCount(currentCount);
+        
+        if (progress < 1) {
+          cleanup = requestAnimationFrame(updateCount);
+        }
+      };
+      
+      cleanup = requestAnimationFrame(updateCount);
+      
+      return () => {
+        if (cleanup) cancelAnimationFrame(cleanup);
+      };
+    }
+  }, [from, to, duration, controls, inView]);
 
   return (
-    <motion.span animate={controls}>
+    <motion.span ref={ref} animate={controls}>
       {rounded(count).toLocaleString()}
     </motion.span>
   );
@@ -206,45 +239,40 @@ const LocationDetails = () => {
             </div>
 
             {/* Progress Section */}
-            <div className="px-6 py-6 border-b border-neutral-100 bg-white z-10 relative">
-              <div className="flex justify-between items-center mb-4">
-                <h2 className="text-xl font-semibold">Campaign Progress</h2>
-                <motion.span
-                  initial={{ opacity: 0, y: -5 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.2 }}
-                  className="text-primary-600 font-medium"
-                >
-                  {progressPercentage}% Complete
-                </motion.span>
-              </div>
-
-              {/* Animated ProgressBar */}
-              <div className="relative w-full h-3 rounded-full bg-gray-200 overflow-hidden">
-                <motion.div
-                  initial={{ width: 0 }}
-                  animate={{ width: `${progressPercentage}%` }}
-                  transition={{ duration: 1.2 }}
-                  className="h-full bg-gradient-to-r from-orange-500 to-orange-600 rounded-full"
-                />
-              </div>
-
-              {/* Stats Grid */}
-              <div className="grid grid-cols-2 gap-4 mt-6">
-                <div className="bg-primary-50 rounded-lg p-4">
-                  <p className="text-neutral-500 text-sm">Raised so far</p>
-                  <p className="text-2xl font-bold text-primary-700">
-                    <AnimatedCounter to={fundraiser.totalFundraiserDonations || 0} /> {getUnitType()}
-                  </p>
+              <div className="px-6 py-6 border-b border-neutral-100 bg-white z-10 relative">
+                <div className="flex justify-between items-center mb-4">
+                  <h2 className="text-xl font-semibold">Campaign Progress</h2>
+                  <motion.span
+                    initial={{ opacity: 0, y: -5 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.2 }}
+                    className="text-primary-600 font-medium"
+                  >
+                    {progressPercentage}% Complete
+                  </motion.span>
                 </div>
-                <div className="bg-primary-50 rounded-lg p-4">
-                  <p className="text-neutral-500 text-sm">Goal</p>
-                  <p className="text-2xl font-bold text-primary-700">
-                    <AnimatedCounter to={fundraiser.target || 0} /> {getUnitType()}
-                  </p>
+
+                {/* Animated ProgressBar with InView */}
+                <div className="relative w-full h-3 rounded-full bg-gray-200 overflow-hidden">
+                  <ProgressBar percentage={progressPercentage} />
+                </div>
+
+                {/* Stats Grid */}
+                <div className="grid grid-cols-2 gap-4 mt-6">
+                  <div className="bg-primary-50 rounded-lg p-4">
+                    <p className="text-neutral-500 text-sm">Raised</p>
+                    <p className="text-2xl font-bold text-primary-700">
+                      <AnimatedCounter to={fundraiser.totalFundraiserDonations || 0} /> {getUnitType()}
+                    </p>
+                  </div>
+                  <div className="bg-primary-50 rounded-lg p-4">
+                    <p className="text-neutral-500 text-sm">Goal</p>
+                    <p className="text-2xl font-bold text-primary-700">
+                      <AnimatedCounter to={fundraiser.target || 0} /> {getUnitType()}
+                    </p>
+                  </div>
                 </div>
               </div>
-            </div>
 
             {/* Stats */}
             <div className="px-6 pb-6 border-b border-neutral-100">

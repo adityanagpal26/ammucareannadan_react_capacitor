@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { ChevronLeft, ChevronRight, X } from 'lucide-react';
 
 interface ImageGalleryProps {
@@ -36,11 +36,9 @@ const ImageGallery = ({ images, className = '' }: ImageGalleryProps) => {
     <>
       <div className={`grid grid-cols-2 sm:grid-cols-3 gap-2 ${className}`}>
         {images.slice(0, 6).map((image, index) => (
-          <motion.div
+          <div
             key={index}
-            className="aspect-square rounded-lg overflow-hidden cursor-pointer"
-            whileHover={{ scale: 1.03 }}
-            whileTap={{ scale: 0.98 }}
+            className="aspect-square rounded-lg overflow-hidden cursor-pointer hover:opacity-90"
             onClick={() => openModal(index)}
           >
             <img
@@ -48,14 +46,12 @@ const ImageGallery = ({ images, className = '' }: ImageGalleryProps) => {
               alt={`Gallery image ${index + 1}`}
               className="w-full h-full object-cover"
             />
-          </motion.div>
+          </div>
         ))}
         
         {images.length > 6 && (
-          <motion.div
-            className="aspect-square rounded-lg overflow-hidden cursor-pointer relative"
-            whileHover={{ scale: 1.03 }}
-            whileTap={{ scale: 0.98 }}
+          <div
+            className="aspect-square rounded-lg overflow-hidden cursor-pointer relative hover:opacity-90"
             onClick={() => openModal(6)}
           >
             <img
@@ -66,62 +62,57 @@ const ImageGallery = ({ images, className = '' }: ImageGalleryProps) => {
             <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
               <span className="text-white font-medium text-lg">+{images.length - 6}</span>
             </div>
-          </motion.div>
+          </div>
         )}
       </div>
       
-      <AnimatePresence>
-        {showModal && (
+      {showModal && (
+        <div
+          className="fixed inset-0 bg-black/90 z-50 flex items-center justify-center"
+          onClick={closeModal}
+        >
           <motion.div
-            className="fixed inset-0 bg-black/90 z-50 flex items-center justify-center"
+            className="relative w-full max-w-3xl mx-4"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            onClick={closeModal}
+            transition={{ duration: 0.3 }}
+            onClick={(e) => e.stopPropagation()}
           >
-            <motion.div
-              className="relative w-full max-w-3xl mx-4"
-              initial={{ scale: 0.9 }}
-              animate={{ scale: 1 }}
-              exit={{ scale: 0.9 }}
-              onClick={(e) => e.stopPropagation()}
+            <button
+              className="absolute top-4 right-4 p-2 bg-black/50 rounded-full text-white z-10"
+              onClick={closeModal}
             >
+              <X size={24} />
+            </button>
+            
+            <div className="relative">
+              <img
+                src={images[currentImageIndex]}
+                alt={`Gallery image full view`}
+                className="w-full rounded-lg"
+              />
+              
               <button
-                className="absolute top-4 right-4 p-2 bg-black/50 rounded-full text-white z-10"
-                onClick={closeModal}
+                className="absolute left-4 top-1/2 -translate-y-1/2 p-2 bg-black/50 rounded-full text-white"
+                onClick={handlePrevImage}
               >
-                <X size={24} />
+                <ChevronLeft size={24} />
               </button>
               
-              <div className="relative">
-                <img
-                  src={images[currentImageIndex]}
-                  alt={`Gallery image full view`}
-                  className="w-full rounded-lg"
-                />
-                
-                <button
-                  className="absolute left-4 top-1/2 -translate-y-1/2 p-2 bg-black/50 rounded-full text-white"
-                  onClick={handlePrevImage}
-                >
-                  <ChevronLeft size={24} />
-                </button>
-                
-                <button
-                  className="absolute right-4 top-1/2 -translate-y-1/2 p-2 bg-black/50 rounded-full text-white"
-                  onClick={handleNextImage}
-                >
-                  <ChevronRight size={24} />
-                </button>
-              </div>
-              
-              <div className="mt-4 text-center text-white">
-                {currentImageIndex + 1} / {images.length}
-              </div>
-            </motion.div>
+              <button
+                className="absolute right-4 top-1/2 -translate-y-1/2 p-2 bg-black/50 rounded-full text-white"
+                onClick={handleNextImage}
+              >
+                <ChevronRight size={24} />
+              </button>
+            </div>
+            
+            <div className="mt-4 text-center text-white">
+              {currentImageIndex + 1} / {images.length}
+            </div>
           </motion.div>
-        )}
-      </AnimatePresence>
+        </div>
+      )}
     </>
   );
 };

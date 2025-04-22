@@ -74,13 +74,8 @@ const FlowSelection = () => {
     // Use fundraiserType instead of type property
     setFlowType(flow.fundraiserType);
     
-    // Navigate based on the locationsEnabled flag
-    if (flow.locationsEnabled) {
-      navigate(`/locations/${flow.fundraiserType}`);
-    } else {
-      // For flows without locations (like animal flow), go directly to donation
-      navigate(`/donate/${flow.fundraiserType}`);
-    }
+    // Always navigate to video screen first regardless of flow type
+    navigate(`/video/${flow.fundraiserType}`);
   };
   
   return (
@@ -96,18 +91,15 @@ const FlowSelection = () => {
       <Container>
         <motion.div
           className="flex flex-col items-center mb-12"
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.3 }}
         >
           <div className="mb-6">
-            <motion.img 
+            <img 
               src="/Ammucare-Logo-2023-Final.png" 
               alt="Ammucare Logo" 
               className="w-24 h-auto drop-shadow-lg"
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.5 }}
             />
           </div>
           
@@ -132,51 +124,37 @@ const FlowSelection = () => {
             {flows.map((flow) => (
               <motion.div
                 key={flow.id}
-                className="group relative h-96 rounded-2xl overflow-hidden shadow-lg transform transition-transform duration-500 hover:-translate-y-2"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
+                className="group relative h-96 rounded-2xl overflow-hidden shadow-lg"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.3 }}
                 onClick={() => handleFlowSelect(flow)}
-                style={{ cursor: 'pointer' }} // Explicitly set the cursor to pointer
+                style={{ cursor: 'pointer' }}
               >
                 {/* Background Image */}
                 <div 
-                  className="absolute inset-0 bg-cover bg-center transition-transform duration-500 group-hover:scale-110"
+                  className="absolute inset-0 bg-cover bg-center"
                   style={{ 
                     backgroundImage: `url(${flow.imageUrl})`,
-                    cursor: 'default' // This ensures no special cursor on the image itself
+                    cursor: 'default'
                   }}
                 />
                 
                 {/* Gradient Overlay */}
                 <div 
                   className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent"
-                  style={{ pointerEvents: 'none' }} // This prevents the overlay from affecting cursor behavior
+                  style={{ pointerEvents: 'none' }}
                 />
                 
                 {/* Flow Name */}
                 <div 
                   className="absolute bottom-0 left-0 right-0 p-6"
-                  style={{ pointerEvents: 'none' }} // This prevents the text from affecting cursor behavior
-                >
-                  <motion.h3 
-                    className="text-3xl font-bold text-white"
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.5, delay: 0.2 }}
-                    style={{ pointerEvents: 'none' }} // Ensures text doesn't affect cursor
-                  >
-                    {flow.name}
-                  </motion.h3>
-                </div>
-                
-                {/* Shine effect on hover - Make sure it doesn't affect cursor */}
-                <div 
-                  className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/20 to-white/0 
-                    translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000"
                   style={{ pointerEvents: 'none' }}
-                />
+                >
+                  <h3 className="text-3xl font-bold text-white">
+                    {flow.name}
+                  </h3>
+                </div>
               </motion.div>
             ))}
           </div>

@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { useDonationStore } from '../store/donationStore';
-import { getFundraiser } from '../services/api';
+import { getFundraiser, getFundraisers } from '../services/api';
 import { Fundraiser } from '../types';
 import Container from '../components/common/Container';
 import Header from '../components/ui/Header';
@@ -38,18 +38,18 @@ const DonationAmount = () => {
         return;
       }
       
-      // For animal flow, we don't need fundraiser details
-      if (flowType === 'animal') {
-        setLoading(false);
-        return;
-      }
-      
       try {
-        // In a real app, we would fetch based on location and flow type
-        // Here we're just fetching by ID for simplicity
-        if (locationId) {
+        if (flowType === 'animal') {
+          // For animal flow, fetch animal fundraisers
+          const response = await getFundraisers('', 'animal', false);
+          if (response.success && response.data && response.data.length > 0) {
+            setFundraiser(response.data[0]);
+          } else {
+            setError('Failed to fetch animal fundraiser details');
+          }
+        } else if (locationId) {
+          // For other flows, fetch by location ID
           const response = await getFundraiser(locationId);
-          
           if (response.success && response.data) {
             setFundraiser(response.data);
           } else {
@@ -64,40 +64,7 @@ const DonationAmount = () => {
     };
     
     fetchFundraiserDetails();
-    
-    // Use fallback data if API fails
-    const fallbackTimeout = setTimeout(() => {
-      if (loading && !fundraiser && flowType !== 'animal') {
-        const isCoupon = flowType === 'coupon';
-        
-        const fallbackFundraiser: Fundraiser = {
-          id: locationId || '1',
-          name: isCoupon ? 'Annadaan Coupon Distribution' : 'Food for All',
-          description: isCoupon
-            ? 'Help distribute food coupons to those in need'
-            : 'Providing nutritious meals to hungry individuals',
-          locationId: locationId || '1',
-          fundraiserType: flowType || 'human',
-          isCoupon,
-          goalAmount: isCoupon ? 10000 : 100000,
-          raisedAmount: isCoupon ? 6500 : 75000,
-          stats: {
-            totalMeals: isCoupon ? 6500 : 75000,
-            totalDays: 365,
-            totalDonors: 1250,
-          },
-          howItWorks: [],
-          images: [],
-          pricePerUnit: isCoupon ? 50 : 20,
-        };
-        
-        setFundraiser(fallbackFundraiser);
-        setLoading(false);
-      }
-    }, 3000);
-    
-    return () => clearTimeout(fallbackTimeout);
-  }, [locationId, flowType, loading, fundraiser]);
+  }, [locationId, flowType]);
   
   const handleAmountChange = (amount: number) => {
     setSelectedAmount(amount);
@@ -109,7 +76,7 @@ const DonationAmount = () => {
     } else if (fundraiser) {
       // For meal/coupon donations, calculate based on price per unit
       setUnits(amount);
-      setAmount(amount * fundraiser.pricePerUnit);
+      setAmount(amount * (fundraiser.unitPrice || 0));
     }
   };
   
@@ -167,7 +134,7 @@ const DonationAmount = () => {
   }
   
   const unitType = flowType === 'animal' ? 'amount' : flowType === 'coupon' ? 'coupons' : 'meals';
-  const pricePerUnit = fundraiser?.pricePerUnit || 0;
+  const pricePerUnit = fundraiser?.unitPrice || 0;
   const minAmount = flowType === 'animal' ? 100 : 11;
   
   return (
@@ -187,14 +154,14 @@ const DonationAmount = () => {
             <h2 className="text-2xl font-semibold text-neutral-800 mb-2">
               {flowType === 'animal'
                 ? 'Choose Your Donation Amount'
-                : fundraiser?.isCoupon
+                : fundraiser?.couponsEnabled
                   ? 'Choose Number of Coupons'
                   : 'Choose Number of Meals'}
             </h2>
             <p className="text-neutral-600">
               {flowType === 'animal'
                 ? 'Your contribution helps provide food and care for stray and abandoned animals.'
-                : fundraiser?.isCoupon
+                : fundraiser?.couponsEnabled
                   ? 'Each coupon helps someone in need access a nutritious meal.'
                   : 'Your donation will help provide nutritious meals to those in need.'}
             </p>

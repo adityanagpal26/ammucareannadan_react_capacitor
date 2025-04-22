@@ -56,29 +56,24 @@ const Button = ({
   const iconStyles = 'flex items-center';
   const iconSpacing = iconPosition === 'left' ? 'mr-2' : 'ml-2';
   
-  // Adjust animation for better mobile performance
-  const useAnimation = animate || isMobile;
+  // Only use animation if explicitly requested
+  const useAnimation = animate;
   const ButtonComponent = useAnimation ? motion.button : 'button';
   
-  // Subtle animation on mobile for better feedback
+  // Simplified animation props
   const animationProps = useAnimation
     ? {
-        whileHover: isMobile ? {} : { scale: 1.05 },
-        whileTap: { scale: isMobile ? 0.95 : 0.97 },
+        whileTap: { scale: 0.97 },
         transition: { 
           type: 'spring', 
-          stiffness: isMobile ? 500 : 400, 
-          damping: isMobile ? 20 : 17 
+          stiffness: 500, 
+          damping: 20
         },
       }
     : {};
   
   const handleClick = (e: React.MouseEvent) => {
     if (onClick && !disabled) {
-      // Add vibration feedback on mobile
-      if (isMobile && 'navigator' in window && navigator.vibrate) {
-        navigator.vibrate(10); // Subtle 10ms vibration
-      }
       onClick();
     }
   };

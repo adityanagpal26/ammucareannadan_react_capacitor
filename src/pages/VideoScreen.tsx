@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { ArrowLeft, Play } from 'lucide-react';
 import Button from '../components/common/Button';
 
@@ -31,7 +31,8 @@ const VideoScreen = () => {
   
   const handleContinue = () => {
     if (flowType === 'animal') {
-      navigate(`/donate/${flowType}`);
+      // For animal flow, navigate to details page of a default/fixed animal location
+      navigate(`/location/animal-1/${flowType}`);
     } else {
       navigate(`/locations/${flowType}`);
     }
@@ -100,67 +101,48 @@ const VideoScreen = () => {
         <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-transparent to-black/90" />
         
         {showOverlay && (
-          <motion.div
-            className="absolute inset-0 bg-black/50 flex items-center justify-center"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-          >
-            <motion.button
-              className="w-20 h-20 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center group"
-              whileHover={{ scale: 1.1 }}
-              whileTap={{ scale: 0.95 }}
+          <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
+            <button
+              className="w-20 h-20 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center"
               onClick={togglePlay}
             >
-              <Play size={40} className="text-white ml-2 group-hover:text-orange-200 transition-colors" />
-            </motion.button>
-          </motion.div>
+              <Play size={40} className="text-white ml-2" />
+            </button>
+          </div>
         )}
       </div>
       
       {/* Back Button */}
-      <motion.button
+      <button
         className="absolute top-6 left-6 z-20 p-2 rounded-full bg-black/30 backdrop-blur-sm 
           text-white hover:bg-black/50 transition-colors"
         onClick={handleBack}
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        whileHover={{ scale: 1.1 }}
-        whileTap={{ scale: 0.95 }}
       >
         <ArrowLeft size={24} />
-      </motion.button>
+      </button>
       
       {/* Content Overlay */}
       <div className="absolute inset-x-0 bottom-0 z-10 p-8">
         <motion.div
           className="max-w-2xl mx-auto"
-          initial={{ opacity: 0, y: 50 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.5 }}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.3 }}
         >
           <h1 className="text-3xl font-bold text-white mb-4">{title}</h1>
           <p className="text-lg text-white/90 mb-8">{description}</p>
           
-          <motion.div
-            whileHover={{ scale: 1.02 }}
-            whileTap={{ scale: 0.98 }}
+          <Button
+            variant="primary"
+            size="lg"
+            fullWidth
+            onClick={handleContinue}
+            className="bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 
+              hover:to-orange-700 shadow-xl backdrop-blur-sm"
+            animate={false}
           >
-            <Button
-              variant="primary"
-              size="lg"
-              fullWidth
-              onClick={handleContinue}
-              className="bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 
-                hover:to-orange-700 shadow-xl backdrop-blur-sm relative overflow-hidden group"
-            >
-              <span className="relative z-10">Begin Your Service</span>
-              
-              {/* Shine effect */}
-              <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/20 to-white/0 
-                translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000" />
-            </Button>
-          </motion.div>
+            Begin Your Service
+          </Button>
         </motion.div>
       </div>
     </div>

@@ -1,5 +1,5 @@
 import { Capacitor } from '@capacitor/core';
-import { StatusBar, Style } from '@capacitor/status-bar';
+import { StatusBar, Style, Animation } from '@capacitor/status-bar';
 import { Keyboard } from '@capacitor/keyboard';
 import { App } from '@capacitor/app';
 
@@ -105,11 +105,27 @@ export const initCapacitor = async () => {
   if (!isNativePlatform()) return;
   
   try {
+    // Make sure the status bar is visible first without animation to avoid flicker
+    await StatusBar.show({ animation: Animation.None });
+    
+    // Set overlay to false so content doesn't go under the status bar
+    await StatusBar.setOverlaysWebView({ overlay: false });
+    
+    // Set styles based on platform
     if (isAndroid()) {
-      await StatusBar.setBackgroundColor({ color: '#ffffff' });
+      // Set explicit background color for Android
+      await StatusBar.setBackgroundColor({ color: '#FFFFFF' });
+      // Make status bar content LIGHT for better visibility on white background
+      await StatusBar.setStyle({ style: Style.Light });
+    } else if (isIOS()) {
+      // On iOS we need to set the style to Light for dark icons on white background
+      await StatusBar.setStyle({ style: Style.Light });
     }
-    await setStatusBarStyle('dark');
+    
+    // Get and log status bar info to help with debugging
+    const info = await StatusBar.getInfo();
+    console.log('Status Bar Info:', info);
   } catch (error) {
-    console.error('Error initializing Capacitor:', error);
+    console.error('Error initializing StatusBar:', error);
   }
 };

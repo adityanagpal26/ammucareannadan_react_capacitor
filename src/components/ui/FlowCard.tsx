@@ -10,8 +10,9 @@ const FlowCard = ({ flow, onClick }: FlowCardProps) => {
   return (
     <motion.div
       className="bg-white rounded-xl shadow-md overflow-hidden cursor-pointer"
-      whileHover={{ y: -5, transition: { duration: 0.2 } }}
-      whileTap={{ scale: 0.98 }}
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.3 }}
       onClick={onClick}
     >
       <div className="h-48 overflow-hidden">

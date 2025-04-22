@@ -69,6 +69,12 @@ export interface Fundraiser {
   fundraiserOptions: FundraiserOption[];
 }
 
+export interface FundraiserStats {
+  totalMeals: number;
+  totalDays: number;
+  totalDonors: number;
+}
+
 export interface DonationFormData {
   name: string;
   email: string;

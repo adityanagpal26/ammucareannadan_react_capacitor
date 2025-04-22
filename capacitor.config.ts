@@ -21,8 +21,9 @@ const config: CapacitorConfig = {
       resizeOnFullScreen: true
     },
     StatusBar: {
-      style: "dark",
-      backgroundColor: "#ffffff"
+      style: "DARK",
+   //   backgroundColor: "#ffffff",
+  //    overlaysWebView: false
     }
   }
 };

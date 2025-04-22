@@ -10,11 +10,18 @@ import UserDetails from './pages/UserDetails';
 import PaymentGateway from './pages/PaymentGateway';
 import ThankYou from './pages/ThankYou';
 import ErrorPage from './pages/ErrorPage';
-import { setupBackButtonHandler, isNativePlatform, hideKeyboard } from './utils/capacitor';
+import { setupBackButtonHandler, isNativePlatform, hideKeyboard, initCapacitor } from './utils/capacitor';
 
 function App() {
   const location = useLocation();
   const navigate = useNavigate();
+
+  // Initialize Capacitor and Status Bar on app load
+  useEffect(() => {
+    if (isNativePlatform()) {
+      initCapacitor().catch(console.error);
+    }
+  }, []);
 
   // Setup mobile-specific event handlers
   useEffect(() => {
