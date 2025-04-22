@@ -44,7 +44,7 @@ const SplashScreen = () => {
     <div 
       className="min-h-screen flex flex-col items-center justify-center px-4 text-center bg-cover bg-center bg-no-repeat"
       style={{
-        backgroundImage: `linear-gradient(to bottom, rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.6)), url('https://images.pexels.com/photos/2387793/pexels-photo-2387793.jpeg')`,
+        backgroundImage: `linear-gradient(to bottom, rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.6)), url('/pexels-photo-2387793.jpg')`,
       }}
     >
       {/* Logo Container */}
@@ -85,33 +85,35 @@ const SplashScreen = () => {
         )}
       </AnimatePresence>
       
-      {/* Button */}
-      <AnimatePresence>
-        {showButton && (
-          <motion.div
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, ease: "easeOut" }}
-          >
-            <Button 
-              variant="primary" 
-              size="lg" 
-              onClick={handleContinue}
-              className="bg-gradient-to-r from-orange-400 to-orange-600 hover:from-orange-500 hover:to-orange-700 
-                text-white px-6 md:px-8 py-2.5 md:py-3 text-base md:text-lg shadow-lg border border-orange-300/20"
-              animate={false}
+      {/* Button Container with Fixed Height */}
+      <div className="h-14 md:h-16 flex items-center justify-center">
+        <AnimatePresence>
+          {showButton && (
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, ease: "easeOut" }}
             >
-              Begin Your Service
-            </Button>
-          </motion.div>
-        )}
-      </AnimatePresence>
+              <Button 
+                variant="primary" 
+                size="lg" 
+                onClick={handleContinue}
+                className="bg-gradient-to-r from-orange-400 to-orange-600 hover:from-orange-500 hover:to-orange-700 
+                  text-white px-6 md:px-8 py-2.5 md:py-3 text-base md:text-lg shadow-lg border border-orange-300/20"
+                animate={false}
+              >
+                Begin Your Service
+              </Button>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
       
       {/* Sand texture overlay */}
       <div 
         className="fixed inset-0 pointer-events-none mix-blend-overlay opacity-20"
         style={{
-          backgroundImage: `url('https://images.pexels.com/photos/7130554/pexels-photo-7130554.jpeg')`,
+          backgroundImage: `url('/pexels-photo-7130554.jpg')`,
           backgroundSize: 'cover',
           backgroundPosition: 'center',
         }}
