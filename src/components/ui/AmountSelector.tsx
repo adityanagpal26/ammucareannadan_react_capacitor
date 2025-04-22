@@ -60,24 +60,24 @@ const AmountSelector = ({
   
   return (
     <div className="w-full">
-      <div className="mb-6">
-        <h3 className="text-xl font-semibold text-neutral-800 mb-2">
+      <div className="mb-4 md:mb-6">
+        <h3 className="text-lg md:text-xl font-semibold text-neutral-800 mb-1 md:mb-2">
           Select {unitType === 'amount' ? 'amount' : getUnitLabel()}
         </h3>
         {pricePerUnit > 0 && unitType !== 'amount' && (
-          <p className="text-sm text-neutral-600 mb-3">
+          <p className="text-xs md:text-sm text-neutral-600 mb-2 md:mb-3">
             ₹{pricePerUnit} per {unitType === 'meals' ? 'meal' : 'coupon'}
           </p>
         )}
       </div>
       
-      <div className="grid grid-cols-3 sm:grid-cols-4 gap-4 mb-6">
+      <div className="grid grid-cols-3 sm:grid-cols-4 gap-2 md:gap-4 mb-4 md:mb-6">
         {options.map((option) => (
           <motion.button
             key={option}
-            className={`relative py-4 px-3 rounded-xl border-2 text-center font-medium transition-all duration-300 
+            className={`relative py-3 md:py-4 px-2 md:px-3 rounded-lg md:rounded-xl border text-center font-medium transition-all duration-300 
               ${selectedAmount === option
-                ? 'border-primary-500 bg-primary-50/80 text-primary-700 shadow-lg'
+                ? 'border-primary-500 bg-primary-50/80 text-primary-700 shadow'
                 : 'border-neutral-200 text-neutral-700 hover:border-primary-200 hover:bg-primary-50/20'
               } overflow-hidden`}
             whileHover={{ scale: 1.02 }}
@@ -88,7 +88,7 @@ const AmountSelector = ({
             <div className="absolute inset-0 rounded-xl bg-gradient-to-r from-primary-200/0 via-primary-200/30 to-primary-200/0 opacity-0 hover:opacity-100 transition-opacity duration-500" />
             
             {/* Content */}
-            <div className="relative">
+            <div className="relative text-sm md:text-base">
               {unitType === 'amount' ? '₹' : ''}{option}
             </div>
             
@@ -104,9 +104,9 @@ const AmountSelector = ({
         
         {allowCustomAmount && (
           <motion.button
-            className={`relative py-4 px-3 rounded-xl border-2 text-center font-medium transition-all duration-300
+            className={`relative py-3 md:py-4 px-2 md:px-3 rounded-lg md:rounded-xl border text-center font-medium transition-all duration-300
               ${showCustomInput
-                ? 'border-primary-500 bg-primary-50/80 text-primary-700 shadow-lg'
+                ? 'border-primary-500 bg-primary-50/80 text-primary-700 shadow'
                 : 'border-neutral-200 text-neutral-700 hover:border-primary-200 hover:bg-primary-50/20'
               } overflow-hidden`}
             whileHover={{ scale: 1.02 }}
@@ -117,7 +117,7 @@ const AmountSelector = ({
             <div className="absolute inset-0 rounded-xl bg-gradient-to-r from-primary-200/0 via-primary-200/30 to-primary-200/0 opacity-0 hover:opacity-100 transition-opacity duration-500" />
             
             {/* Content */}
-            <div className="relative">
+            <div className="relative text-sm md:text-base">
               Custom
             </div>
           </motion.button>
@@ -126,12 +126,12 @@ const AmountSelector = ({
       
       {showCustomInput && (
         <motion.div
-          className="mt-6"
+          className="mt-4 md:mt-6"
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: -10 }}
         >
-          <label className="block text-sm font-medium text-neutral-700 mb-2">
+          <label className="block text-xs md:text-sm font-medium text-neutral-700 mb-1 md:mb-2">
             Enter custom amount (min: {unitType === 'amount' ? '₹' : ''}{minAmount})
           </label>
           <div className="relative">
@@ -142,9 +142,9 @@ const AmountSelector = ({
             )}
             <input
               type="number"
-              className={`w-full px-4 ${unitType === 'amount' ? 'pl-7' : ''} py-3 border-2 border-neutral-200 
-                rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-300
-                transition-all duration-300`}
+              className={`w-full px-3 md:px-4 ${unitType === 'amount' ? 'pl-6 md:pl-7' : ''} py-2 md:py-3 border-2 border-neutral-200 
+                rounded-lg md:rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-300
+                transition-all duration-300 text-sm md:text-base`}
               placeholder={`Enter ${unitType === 'amount' ? 'amount' : getUnitLabel()}`}
               min={minAmount}
               value={customAmount}
@@ -156,23 +156,23 @@ const AmountSelector = ({
       
       {selectedAmount > 0 && (
         <motion.div
-          className="mt-8 p-6 bg-gradient-to-br from-primary-50 to-primary-100/50 rounded-xl border border-primary-200 shadow-sm"
+          className="mt-6 md:mt-8 p-4 md:p-6 bg-gradient-to-br from-primary-50 to-primary-100/50 rounded-lg md:rounded-xl border border-primary-200 shadow-sm"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ type: "spring", damping: 20 }}
         >
           <div className="flex justify-between items-center">
-            <span className="text-neutral-700 font-medium">
+            <span className="text-sm md:text-base text-neutral-700 font-medium">
               {unitType === 'amount' ? 'Donation amount' : `${getUnitLabel()} selected`}:
             </span>
-            <span className="text-xl font-bold text-primary-700">
+            <span className="text-lg md:text-xl font-bold text-primary-700">
               {unitType === 'amount' ? '₹' : ''}{selectedAmount}
             </span>
           </div>
           {unitType !== 'amount' && pricePerUnit > 0 && (
-            <div className="flex justify-between items-center mt-3 pt-3 border-t border-primary-200">
-              <span className="text-neutral-700 font-medium">Total amount:</span>
-              <span className="text-xl font-bold text-primary-700">
+            <div className="flex justify-between items-center mt-3 pt-2 md:pt-3 border-t border-primary-200">
+              <span className="text-sm md:text-base text-neutral-700 font-medium">Total amount:</span>
+              <span className="text-lg md:text-xl font-bold text-primary-700">
                 ₹{(selectedAmount * pricePerUnit).toLocaleString()}
               </span>
             </div>

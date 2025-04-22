@@ -107,7 +107,7 @@ const UserDetails = () => {
   };
   
   return (
-    <div className="min-h-screen bg-neutral-50 pb-8">
+    <div className="min-h-screen bg-neutral-50 pb-6 md:pb-8">
       <Header title={getTitle()} showBackButton={true} />
       
       <Container>
@@ -116,16 +116,16 @@ const UserDetails = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
         >
-          <div className="mb-8">
-            <h2 className="text-2xl font-semibold text-neutral-800 mb-2">
+          <div className="mb-5 md:mb-8">
+            <h2 className="text-lg md:text-2xl font-semibold text-neutral-800 mb-2">
               Complete Your Donation
             </h2>
-            <div className="h-1 w-20 bg-gradient-to-r from-primary-500 to-primary-300 rounded-full" />
+            <div className="h-1 w-16 md:w-20 bg-gradient-to-r from-primary-500 to-primary-300 rounded-full" />
           </div>
           
           {error && (
             <motion.div 
-              className="bg-secondary-50 border border-secondary-200 rounded-xl p-4 text-secondary-700 mb-6"
+              className="bg-secondary-50 border border-secondary-200 rounded-lg md:rounded-xl p-3 md:p-4 text-secondary-700 mb-4 md:mb-6 text-sm md:text-base"
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
             >
@@ -134,11 +134,10 @@ const UserDetails = () => {
           )}
           
           <form onSubmit={handleSubmit(onSubmit)} className="max-w-4xl mx-auto">
-            <div className="bg-white rounded-xl shadow-sm p-6 mb-6">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6">
+            <div className="bg-white rounded-lg md:rounded-xl shadow-sm p-4 md:p-6 mb-4 md:mb-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-x-4 md:gap-x-6">
                 <FormInput
                   label="Full Name"
-                  name="name"
                   register={register}
                   error={errors.name}
                   required
@@ -151,7 +150,6 @@ const UserDetails = () => {
                 
                 <FormInput
                   label="Email"
-                  name="email"
                   register={register}
                   error={errors.email}
                   required
@@ -169,7 +167,6 @@ const UserDetails = () => {
                 
                 <FormInput
                   label="Phone Number"
-                  name="phone"
                   register={register}
                   error={errors.phone}
                   required
@@ -187,7 +184,6 @@ const UserDetails = () => {
                 
                 <FormInput
                   label="Address"
-                  name="address"
                   register={register}
                   error={errors.address}
                   required
@@ -199,16 +195,16 @@ const UserDetails = () => {
                 />
               </div>
               
-              <div className="mt-6 pt-6 border-t border-neutral-200">
+              <div className="mt-4 md:mt-6 pt-4 md:pt-6 border-t border-neutral-200">
                 <label className="flex items-center">
                   <motion.input
                     type="checkbox"
-                    className="rounded-lg border-2 border-neutral-300 text-primary-500 focus:ring-primary-500 h-5 w-5 transition-all duration-300"
+                    className="rounded-lg border-2 border-neutral-300 text-primary-500 focus:ring-primary-500 h-4 w-4 md:h-5 md:w-5 transition-all duration-300"
                     checked={requireReceipt}
                     onChange={(e) => setRequireReceipt(e.target.checked)}
                     whileTap={{ scale: 0.9 }}
                   />
-                  <span className="ml-3 text-neutral-700">
+                  <span className="ml-2 md:ml-3 text-neutral-700 text-xs md:text-sm">
                     I want a tax receipt (80G)
                   </span>
                 </label>
@@ -219,11 +215,10 @@ const UserDetails = () => {
                   initial={{ opacity: 0, height: 0 }}
                   animate={{ opacity: 1, height: 'auto' }}
                   exit={{ opacity: 0, height: 0 }}
-                  className="mt-6"
+                  className="mt-4 md:mt-6"
                 >
                   <FormInput
                     label="PAN Number"
-                    name="pan"
                     register={register}
                     error={errors.pan}
                     required={requireReceipt}
@@ -240,17 +235,17 @@ const UserDetails = () => {
                 </motion.div>
               )}
               
-              <div className="mt-6">
-                <label className="block text-sm font-medium text-neutral-700 mb-2 flex items-center">
-                  <span className="mr-2 text-primary-500">
-                    <FileText size={18} />
+              <div className="mt-4 md:mt-6">
+                <label className="block text-xs md:text-sm font-medium text-neutral-700 mb-1 md:mb-2 flex items-center">
+                  <span className="mr-1.5 md:mr-2 text-primary-500">
+                    <FileText size={16} />
                   </span>
                   Reason for Donation (Optional)
                 </label>
                 <textarea
-                  className="w-full px-4 py-3 border-2 border-neutral-200 rounded-xl shadow-sm 
+                  className="w-full px-3 md:px-4 py-2 md:py-3 border-2 border-neutral-200 rounded-lg md:rounded-xl shadow-sm 
                     focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-300
-                    transition-all duration-300 resize-none"
+                    transition-all duration-300 resize-none text-sm md:text-base"
                   rows={3}
                   placeholder="Share why you're making this donation..."
                   {...register('reason')}
@@ -259,7 +254,7 @@ const UserDetails = () => {
             </div>
             
             <motion.div 
-              className="mt-8"
+              className="mt-5 md:mt-8"
               whileHover={{ scale: 1.01 }}
               whileTap={{ scale: 0.99 }}
             >
@@ -270,7 +265,7 @@ const UserDetails = () => {
                 type="submit"
                 disabled={isSubmitting}
                 className={`
-                  relative overflow-hidden
+                  relative overflow-hidden text-sm md:text-base py-2.5 md:py-3
                   ${isSubmitting ? 'opacity-70 cursor-not-allowed' : ''}
                 `}
                 animate

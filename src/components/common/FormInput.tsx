@@ -28,17 +28,17 @@ const FormInput = ({
   const getIcon = () => {
     switch (icon || name) {
       case 'name':
-        return <User size={18} />;
+        return <User size={16} />;
       case 'email':
-        return <Mail size={18} />;
+        return <Mail size={16} />;
       case 'phone':
-        return <Phone size={18} />;
+        return <Phone size={16} />;
       case 'address':
-        return <MapPin size={18} />;
+        return <MapPin size={16} />;
       case 'pan':
-        return <CreditCard size={18} />;
+        return <CreditCard size={16} />;
       case 'reason':
-        return <FileText size={18} />;
+        return <FileText size={16} />;
       default:
         return null;
     }
@@ -46,14 +46,17 @@ const FormInput = ({
   
   const IconComponent = getIcon();
   
+  // Get the register props separately
+  const registerProps = register(name);
+  
   return (
-    <div className={`mb-6 ${className}`}>
+    <div className={`mb-4 md:mb-6 ${className}`}>
       <label 
         htmlFor={name} 
-        className="block text-sm font-medium text-neutral-700 mb-2 flex items-center"
+        className="block text-xs md:text-sm font-medium text-neutral-700 mb-1 md:mb-2 flex items-center"
       >
         {IconComponent && (
-          <span className={`mr-2 ${error ? 'text-secondary-500' : 'text-primary-500'}`}>
+          <span className={`mr-1.5 md:mr-2 ${error ? 'text-secondary-500' : 'text-primary-500'}`}>
             {IconComponent}
           </span>
         )}
@@ -62,15 +65,17 @@ const FormInput = ({
       </label>
       
       <div className="relative">
-        <motion.input
+        {/* Use a regular input instead of motion.input */}
+        <input
           id={name}
-          {...register(name)}
+          {...registerProps}
           {...rest}
           className={`
-            w-full px-4 py-3 
-            border-2 rounded-xl
+            w-full px-3 md:px-4 py-2 md:py-3 
+            border-2 rounded-lg md:rounded-xl
             shadow-sm
             transition-all duration-300
+            text-sm md:text-base
             ${error 
               ? 'border-secondary-300 focus:border-secondary-500 animate-shake' 
               : 'border-neutral-200 focus:border-primary-500'
@@ -85,10 +90,10 @@ const FormInput = ({
         <AnimatePresence>
           {error && (
             <motion.p
-              className="mt-2 text-sm text-secondary-500 flex items-center"
-              initial={{ opacity: 0, y: -10 }}
+              className="mt-1 md:mt-2 text-xs md:text-sm text-secondary-500 flex items-center"
+              initial={{ opacity: 0, y: -5 }}
               animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -10 }}
+              exit={{ opacity: 0, y: -5 }}
             >
               {error.message}
             </motion.p>

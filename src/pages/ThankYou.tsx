@@ -133,36 +133,36 @@ const ThankYou = () => {
   };
   
   return (
-    <div className="min-h-screen bg-gradient-to-b from-primary-600 to-primary-800 flex flex-col items-center justify-center py-8">
+    <div className="min-h-screen bg-gradient-to-b from-primary-600 to-primary-800 flex flex-col items-center justify-center py-6 md:py-8">
       <Container>
         <motion.div
-          className="bg-white rounded-xl shadow-lg p-6 md:p-8 max-w-lg mx-auto"
+          className="bg-white rounded-lg md:rounded-xl shadow-lg p-5 md:p-8 max-w-lg mx-auto"
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.5 }}
         >
-          <div className="flex justify-center mb-6">
-            <div className="bg-primary-100 p-4 rounded-full">
-              <Heart className="w-16 h-16 text-primary-500" />
+          <div className="flex justify-center mb-4 md:mb-6">
+            <div className="bg-primary-100 p-3 md:p-4 rounded-full">
+              <Heart className="w-12 h-12 md:w-16 md:h-16 text-primary-500" />
             </div>
           </div>
           
-          <h1 className="text-2xl md:text-3xl font-bold text-neutral-800 text-center mb-2">
+          <h1 className="text-xl md:text-3xl font-bold text-neutral-800 text-center mb-1 md:mb-2">
             Thank You!
           </h1>
           
-          <p className="text-neutral-600 text-center mb-6">
+          <p className="text-sm md:text-base text-neutral-600 text-center mb-4 md:mb-6">
             You have successfully {getTitleByFlowType()} with your donation.
           </p>
           
-          <div className="bg-primary-50 p-4 rounded-lg border border-primary-100 mb-6">
-            <div className="flex justify-between items-center mb-3">
+          <div className="bg-primary-50 p-3 md:p-4 rounded-lg border border-primary-100 mb-4 md:mb-6">
+            <div className="flex justify-between items-center mb-2 md:mb-3 text-sm md:text-base">
               <span className="text-neutral-600">Amount Donated:</span>
               <span className="font-bold text-primary-700">₹{donation.amount.toLocaleString()}</span>
             </div>
             
             {donation.units > 0 && donation.flowType !== 'animal' && (
-              <div className="flex justify-between items-center">
+              <div className="flex justify-between items-center text-sm md:text-base">
                 <span className="text-neutral-600">
                   {donation.flowType === 'coupon' ? 'Coupons' : 'Meals'} Provided:
                 </span>
@@ -172,38 +172,41 @@ const ThankYou = () => {
           </div>
           
           {donation.userDetails.requireReceipt && (
-            <div className="mb-6">
+            <div className="mb-4 md:mb-6">
               <Button
                 variant="outline"
                 fullWidth
-                icon={<Download size={18} />}
+                icon={<Download size={16} className="md:size-18" />}
                 onClick={handleDownloadReceipt}
+                className="text-xs md:text-sm py-2 md:py-2.5"
               >
                 Download Receipt
               </Button>
             </div>
           )}
           
-          <div className="grid grid-cols-2 gap-4 mb-6">
+          <div className="grid grid-cols-2 gap-3 md:gap-4 mb-4 md:mb-6">
             <Button
               variant="outline"
-              icon={<Share2 size={18} />}
+              icon={<Share2 size={16} className="md:size-18" />}
               onClick={handleShare}
+              className="text-xs md:text-sm py-2 md:py-2.5"
             >
               Share
             </Button>
             
             <Button
               variant="primary"
-              icon={<ArrowRight size={18} />}
+              icon={<ArrowRight size={16} className="md:size-18" />}
               iconPosition="right"
               onClick={handleDonateAgain}
+              className="text-xs md:text-sm py-2 md:py-2.5"
             >
               Donate Again
             </Button>
           </div>
           
-          <p className="text-sm text-neutral-500 text-center">
+          <p className="text-xs md:text-sm text-neutral-500 text-center">
             A confirmation has been sent to your email: {donation.userDetails.email}
           </p>
         </motion.div>

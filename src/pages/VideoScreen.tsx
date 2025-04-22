@@ -4,29 +4,21 @@ import { motion } from 'framer-motion';
 import { ArrowLeft, Play } from 'lucide-react';
 import Button from '../components/common/Button';
 
-const videoSources = {
-  human: 'https://assets.mixkit.co/videos/preview/mixkit-serving-food-to-a-man-on-the-street-40597-large.mp4',
-  animal: 'https://assets.mixkit.co/videos/preview/mixkit-little-girl-feeding-a-horse-hay-41886-large.mp4',
-  coupon: 'https://assets.mixkit.co/videos/preview/mixkit-people-serving-food-to-a-family-40591-large.mp4',
-};
+// Updated to use the YouTube URL you specified
+const videoUrl = 'https://www.youtube.com/shorts/ZXTyTXA53EU?feature=share';
 
 const VideoScreen = () => {
   const { flowType } = useParams<{ flowType: string }>();
   const navigate = useNavigate();
-  const videoRef = useRef<HTMLVideoElement>(null);
-  const [isPlaying, setIsPlaying] = useState(false);
   const [showOverlay, setShowOverlay] = useState(true);
   
   useEffect(() => {
-    if (videoRef.current) {
-      const timer = setTimeout(() => {
-        videoRef.current?.play();
-        setIsPlaying(true);
-        setShowOverlay(false);
-      }, 500);
-      
-      return () => clearTimeout(timer);
-    }
+    // Auto-hide overlay after a delay
+    const timer = setTimeout(() => {
+      setShowOverlay(false);
+    }, 1000);
+    
+    return () => clearTimeout(timer);
   }, []);
   
   const handleContinue = () => {
@@ -38,23 +30,9 @@ const VideoScreen = () => {
     }
   };
   
-  const togglePlay = () => {
-    if (videoRef.current) {
-      if (isPlaying) {
-        videoRef.current.pause();
-      } else {
-        videoRef.current.play();
-      }
-      setIsPlaying(!isPlaying);
-      setShowOverlay(!showOverlay);
-    }
-  };
-  
   const handleBack = () => {
     navigate(-1);
   };
-  
-  const videoSource = flowType ? videoSources[flowType as keyof typeof videoSources] : videoSources.human;
   
   const getContent = () => {
     switch (flowType) {
@@ -83,54 +61,64 @@ const VideoScreen = () => {
   
   const { title, description } = getContent();
   
+  // Function to extract YouTube video ID
+  const getYouTubeEmbedUrl = (url: string) => {
+    // For YouTube shorts
+    const shortsRegex = /youtube\.com\/shorts\/([a-zA-Z0-9_-]+)/;
+    const shortsMatch = url.match(shortsRegex);
+    
+    if (shortsMatch && shortsMatch[1]) {
+      return `https://www.youtube.com/embed/${shortsMatch[1]}?autoplay=1&mute=1&controls=0&loop=1&playlist=${shortsMatch[1]}`;
+    }
+    
+    // For regular YouTube videos
+    const regex = /(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/;
+    const match = url.match(regex);
+    
+    if (match && match[1]) {
+      return `https://www.youtube.com/embed/${match[1]}?autoplay=1&mute=1&controls=0&loop=1&playlist=${match[1]}`;
+    }
+    
+    return url;
+  };
+  
+  const embedUrl = getYouTubeEmbedUrl(videoUrl);
+  
   return (
     <div className="relative min-h-screen bg-black overflow-hidden">
       {/* Video Container */}
       <div className="absolute inset-0">
-        <video
-          ref={videoRef}
-          src={videoSource}
+        <iframe
+          src={embedUrl}
           className="w-full h-full object-cover"
-          playsInline
-          muted
-          loop
-          onClick={togglePlay}
-        />
+          frameBorder="0"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowFullScreen
+        ></iframe>
         
         {/* Gradient Overlays */}
-        <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-transparent to-black/90" />
-        
-        {showOverlay && (
-          <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
-            <button
-              className="w-20 h-20 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center"
-              onClick={togglePlay}
-            >
-              <Play size={40} className="text-white ml-2" />
-            </button>
-          </div>
-        )}
+        <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-transparent to-black/90 pointer-events-none" />
       </div>
       
       {/* Back Button */}
       <button
-        className="absolute top-6 left-6 z-20 p-2 rounded-full bg-black/30 backdrop-blur-sm 
+        className="absolute top-4 md:top-6 left-4 md:left-6 z-20 p-1.5 md:p-2 rounded-full bg-black/30 backdrop-blur-sm 
           text-white hover:bg-black/50 transition-colors"
         onClick={handleBack}
       >
-        <ArrowLeft size={24} />
+        <ArrowLeft size={18} />
       </button>
       
       {/* Content Overlay */}
-      <div className="absolute inset-x-0 bottom-0 z-10 p-8">
+      <div className="absolute inset-x-0 bottom-0 z-10 p-4 md:p-8">
         <motion.div
-          className="max-w-2xl mx-auto"
+          className="max-w-md md:max-w-2xl mx-auto"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.3 }}
         >
-          <h1 className="text-3xl font-bold text-white mb-4">{title}</h1>
-          <p className="text-lg text-white/90 mb-8">{description}</p>
+          <h1 className="text-lg md:text-2xl font-bold text-white mb-1.5 md:mb-3">{title}</h1>
+          <p className="text-sm md:text-base text-white/90 mb-4 md:mb-6">{description}</p>
           
           <Button
             variant="primary"
@@ -138,7 +126,7 @@ const VideoScreen = () => {
             fullWidth
             onClick={handleContinue}
             className="bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 
-              hover:to-orange-700 shadow-xl backdrop-blur-sm"
+              hover:to-orange-700 shadow-xl backdrop-blur-sm text-sm md:text-base py-2.5 md:py-3"
             animate={false}
           >
             Begin Your Service

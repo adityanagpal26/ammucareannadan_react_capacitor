@@ -138,7 +138,7 @@ const DonationAmount = () => {
   const minAmount = flowType === 'animal' ? 100 : 11;
   
   return (
-    <div className="min-h-screen bg-neutral-50 pb-8">
+    <div className="min-h-screen bg-neutral-50 pb-6 md:pb-8">
       <Header
         title={getTitle()}
         showBackButton={true}
@@ -150,15 +150,15 @@ const DonationAmount = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
         >
-          <div className="mb-6">
-            <h2 className="text-2xl font-semibold text-neutral-800 mb-2">
+          <div className="mb-4 md:mb-6">
+            <h2 className="text-lg md:text-2xl font-semibold text-neutral-800 mb-1 md:mb-2">
               {flowType === 'animal'
                 ? 'Choose Your Donation Amount'
                 : fundraiser?.couponsEnabled
                   ? 'Choose Number of Coupons'
                   : 'Choose Number of Meals'}
             </h2>
-            <p className="text-neutral-600">
+            <p className="text-sm md:text-base text-neutral-600">
               {flowType === 'animal'
                 ? 'Your contribution helps provide food and care for stray and abandoned animals.'
                 : fundraiser?.couponsEnabled
@@ -167,7 +167,7 @@ const DonationAmount = () => {
             </p>
           </div>
           
-          <div className="bg-white rounded-xl shadow-sm p-6 mb-6">
+          <div className="bg-white rounded-lg md:rounded-xl shadow-sm p-4 md:p-6 mb-4 md:mb-6">
             <AmountSelector
               options={getAmountOptions()}
               unitType={unitType}
@@ -178,7 +178,7 @@ const DonationAmount = () => {
             />
           </div>
           
-          <div className="mt-6">
+          <div className="mt-4 md:mt-6">
             <Button
               variant="primary"
               size="lg"
@@ -186,6 +186,7 @@ const DonationAmount = () => {
               onClick={handleContinue}
               disabled={selectedAmount <= 0}
               animate
+              className="text-sm md:text-base py-2.5 md:py-3"
             >
               Continue
             </Button>

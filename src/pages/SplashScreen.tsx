@@ -49,7 +49,7 @@ const SplashScreen = () => {
     >
       {/* Logo Container */}
       <motion.div
-        className="relative mb-8"
+        className="relative mb-6 md:mb-8"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.6, ease: "easeOut" }}
@@ -59,13 +59,13 @@ const SplashScreen = () => {
           <img 
             src="/Ammucare-Logo-2023-Final.png" 
             alt="Ammucare Logo" 
-            className="w-40 h-auto drop-shadow-lg"
+            className="w-32 md:w-40 h-auto drop-shadow-lg"
           />
         </div>
         
         {/* Title */}
-        <div className="mt-4">
-          <p className="text-orange-100 text-lg">Feed the Soul</p>
+        <div className="mt-3 md:mt-4">
+          <p className="text-orange-100 text-base md:text-lg">Feed the Soul</p>
         </div>
       </motion.div>
       
@@ -73,12 +73,12 @@ const SplashScreen = () => {
       <AnimatePresence>
         {showQuote && (
           <motion.div
-            className="max-w-md mb-12"
+            className="max-w-xs md:max-w-md mb-8 md:mb-12"
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, ease: "easeOut" }}
           >
-            <blockquote className="text-2xl italic text-white font-medium drop-shadow-lg">
+            <blockquote className="text-xl md:text-2xl italic text-white font-medium drop-shadow-lg">
               "{quote}"
             </blockquote>
           </motion.div>
@@ -98,7 +98,7 @@ const SplashScreen = () => {
               size="lg" 
               onClick={handleContinue}
               className="bg-gradient-to-r from-orange-400 to-orange-600 hover:from-orange-500 hover:to-orange-700 
-                text-white px-8 py-3 text-lg shadow-lg border border-orange-300/20"
+                text-white px-6 md:px-8 py-2.5 md:py-3 text-base md:text-lg shadow-lg border border-orange-300/20"
               animate={false}
             >
               Begin Your Service

@@ -15,7 +15,7 @@ const FlowCard = ({ flow, onClick }: FlowCardProps) => {
       transition={{ duration: 0.3 }}
       onClick={onClick}
     >
-      <div className="h-48 overflow-hidden">
+      <div className="h-32 md:h-48 overflow-hidden">
         <img 
           src={flow.imageUrl} 
           alt={flow.name} 
@@ -23,8 +23,8 @@ const FlowCard = ({ flow, onClick }: FlowCardProps) => {
         />
       </div>
       
-      <div className="p-5 text-center">
-        <h3 className="text-xl font-semibold text-neutral-800">{flow.name}</h3>
+      <div className="p-3 md:p-5 text-center">
+        <h3 className="text-lg md:text-xl font-semibold text-neutral-800">{flow.name}</h3>
       </div>
     </motion.div>
   );

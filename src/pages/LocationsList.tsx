@@ -49,6 +49,9 @@ const LocationsList = () => {
             id: 1,
             name: 'Tiruvannamalai',
             hasCoupons: true,
+            imageUrl: 'https://media.annadaan.ammucare.org/locations/tiruvannamalai.png',
+            city: 'Tiruvannamalai',
+            state: 'Tamil Nadu',
             photo: {
               id: 1,
               photoUrl: 'https://media.annadaan.ammucare.org/locations/tiruvannamalai.png',
@@ -59,6 +62,9 @@ const LocationsList = () => {
             id: 2,
             name: 'Shirdi',
             hasCoupons: true,
+            imageUrl: 'https://media.annadaan.ammucare.org/locations/shirdi.png',
+            city: 'Shirdi',
+            state: 'Maharashtra',
             photo: {
               id: 2,
               photoUrl: 'https://media.annadaan.ammucare.org/locations/shirdi.png',
@@ -127,48 +133,48 @@ const LocationsList = () => {
       />
       
       <Container>
-        <div className="mb-8">
-          <div className="flex items-center space-x-2 mb-6">
-            <div className="bg-primary-100 p-2 rounded-full">
-              <Map size={24} className="text-primary-500" />
+        <div className="mb-6 md:mb-8">
+          <div className="flex items-center space-x-2 mb-4 md:mb-6">
+            <div className="bg-primary-100 p-1.5 md:p-2 rounded-full">
+              <Map size={20} className="text-primary-500" />
             </div>
-            <h2 className="text-2xl font-semibold text-neutral-800">Select a Location</h2>
+            <h2 className="text-lg md:text-2xl font-semibold text-neutral-800">Select a Location</h2>
           </div>
           
-          <div className="relative mb-8">
-            <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-              <Search size={20} className="text-neutral-400" />
+          <div className="relative mb-6 md:mb-8">
+            <div className="absolute inset-y-0 left-0 pl-3 md:pl-4 flex items-center pointer-events-none">
+              <Search size={18} className="text-neutral-400" />
             </div>
             <input
               type="text"
-              className="block w-full pl-12 pr-4 py-3 border-2 border-neutral-200 rounded-xl 
+              className="block w-full pl-10 md:pl-12 pr-3 md:pr-4 py-2.5 md:py-3 border-2 border-neutral-200 rounded-lg md:rounded-xl 
                 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-300
-                transition-all duration-300 shadow-sm"
-              placeholder="Search by location name or city..."
+                transition-all duration-300 shadow-sm text-sm md:text-base"
+              placeholder="Search by location name..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
             />
           </div>
           
           {loading ? (
-            <div className="flex justify-center items-center py-12">
-              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-500"></div>
+            <div className="flex justify-center items-center py-8 md:py-12">
+              <div className="animate-spin rounded-full h-10 w-10 md:h-12 md:w-12 border-b-2 border-primary-500"></div>
             </div>
           ) : error ? (
-            <div className="bg-secondary-50 border border-secondary-200 rounded-xl p-6 text-secondary-700 text-center">
+            <div className="bg-secondary-50 border border-secondary-200 rounded-xl p-4 md:p-6 text-secondary-700 text-center text-sm md:text-base">
               {error}
             </div>
           ) : filteredLocations.length === 0 ? (
             <motion.div 
-              className="bg-neutral-100 rounded-xl p-8 text-center"
+              className="bg-neutral-100 rounded-xl p-6 md:p-8 text-center"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
             >
-              <p className="text-neutral-600 text-lg">No locations found matching your search.</p>
+              <p className="text-neutral-600 text-sm md:text-lg">No locations found matching your search.</p>
             </motion.div>
           ) : (
             <motion.div
-              className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"
+              className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 md:gap-6"
               variants={container}
               initial="hidden"
               animate="show"
@@ -180,7 +186,7 @@ const LocationsList = () => {
                   className="group"
                 >
                   <div 
-                    className="relative h-64 rounded-xl overflow-hidden shadow-lg border border-neutral-200/50
+                    className="relative h-44 sm:h-48 md:h-64 rounded-lg md:rounded-xl overflow-hidden shadow-md md:shadow-lg border border-neutral-200/50
                       transform transition-all duration-300 hover:-translate-y-1 hover:shadow-xl
                       cursor-pointer"
                     onClick={() => handleLocationSelect(location)}
@@ -195,10 +201,10 @@ const LocationsList = () => {
                     <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent" />
                     
                     {/* Content */}
-                    <div className="absolute bottom-0 left-0 right-0 p-4 text-white">
-                      <h3 className="text-xl font-semibold mb-1 line-clamp-2">{location.name}</h3>
+                    <div className="absolute bottom-0 left-0 right-0 p-2 sm:p-3 md:p-4 text-white">
+                      <h3 className="text-sm sm:text-base md:text-lg font-semibold mb-0.5 sm:mb-1 line-clamp-2">{location.name}</h3>
                       {location.hasCoupons && (
-                        <p className="text-sm bg-primary-500 text-white px-2 py-1 rounded-full inline-block">
+                        <p className="text-xs md:text-sm bg-primary-500 text-white px-1.5 py-0.5 rounded-full inline-block font-medium whitespace-nowrap">
                           Coupons Available
                         </p>
                       )}

@@ -80,7 +80,7 @@ const FlowSelection = () => {
   
   return (
     <div 
-      className="min-h-screen py-12 bg-gradient-to-br from-orange-50 via-yellow-50 to-orange-100"
+      className="min-h-screen py-8 md:py-12 bg-gradient-to-br from-orange-50 via-yellow-50 to-orange-100"
       style={{
         backgroundImage: `linear-gradient(to bottom, rgba(255, 248, 240, 0.9), rgba(255, 237, 213, 0.95)), url('https://images.pexels.com/photos/7130554/pexels-photo-7130554.jpeg')`,
         backgroundSize: 'cover',
@@ -90,41 +90,41 @@ const FlowSelection = () => {
     >
       <Container>
         <motion.div
-          className="flex flex-col items-center mb-12"
+          className="flex flex-col items-center mb-8 md:mb-12"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.3 }}
         >
-          <div className="mb-6">
+          <div className="mb-4 md:mb-6">
             <img 
               src="/Ammucare-Logo-2023-Final.png" 
               alt="Ammucare Logo" 
-              className="w-24 h-auto drop-shadow-lg"
+              className="w-20 md:w-24 h-auto drop-shadow-lg"
             />
           </div>
           
-          <h1 className="text-3xl font-bold text-neutral-800 text-center mb-3">
+          <h1 className="text-2xl md:text-3xl font-bold text-neutral-800 text-center mb-2 md:mb-3">
             Choose Your Path of Service
           </h1>
-          <p className="text-neutral-600 text-center max-w-xl text-lg">
+         {/* <p className="text-neutral-600 text-center max-w-xl text-base md:text-lg">
             Every act of giving is a step towards divine grace. Select how you wish to serve today.
-          </p>
+          </p> */}
         </motion.div>
         
         {loading ? (
-          <div className="flex justify-center items-center py-12">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-500"></div>
+          <div className="flex justify-center items-center py-8 md:py-12">
+            <div className="animate-spin rounded-full h-10 w-10 md:h-12 md:w-12 border-b-2 border-primary-500"></div>
           </div>
         ) : error ? (
           <div className="bg-secondary-50 border border-secondary-200 rounded-lg p-4 text-secondary-700 text-center">
             {error}
           </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 md:gap-8">
             {flows.map((flow) => (
               <motion.div
                 key={flow.id}
-                className="group relative h-96 rounded-2xl overflow-hidden shadow-lg"
+                className="group relative h-48 sm:h-56 md:h-80 rounded-xl md:rounded-2xl overflow-hidden shadow-lg"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ duration: 0.3 }}
@@ -148,10 +148,10 @@ const FlowSelection = () => {
                 
                 {/* Flow Name */}
                 <div 
-                  className="absolute bottom-0 left-0 right-0 p-6"
+                  className="absolute bottom-0 left-0 right-0 p-3 sm:p-4 md:p-6"
                   style={{ pointerEvents: 'none' }}
                 >
-                  <h3 className="text-3xl font-bold text-white">
+                  <h3 className="text-lg sm:text-xl md:text-2xl font-bold text-white">
                     {flow.name}
                   </h3>
                 </div>

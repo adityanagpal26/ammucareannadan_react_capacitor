@@ -19,6 +19,9 @@ export interface Location {
   name: string;
   hasCoupons: boolean;
   photo: Photo;
+  imageUrl: string;
+  city: string;
+  state: string;
 }
 
 export interface FundraiserPhoto {

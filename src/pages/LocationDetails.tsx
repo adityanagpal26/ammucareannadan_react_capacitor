@@ -198,7 +198,7 @@ const LocationDetails = () => {
   return (
     <div className="min-h-screen bg-[#FDF8F3]">
       {/* Hero Image with Overlay */}
-      <div className="relative h-[280px] overflow-hidden">
+      <div className="relative h-[240px] md:h-[280px] overflow-hidden">
         <motion.div className="absolute inset-0" style={{ scale: imageScale }}>
           <motion.div
             className="w-full h-full bg-center bg-cover"
@@ -212,13 +212,13 @@ const LocationDetails = () => {
 
         <button
           onClick={handleBack}
-          className="absolute top-6 left-6 z-10 p-2 rounded-full bg-black/40 text-white hover:bg-black/60"
+          className="absolute top-4 md:top-6 left-4 md:left-6 z-10 p-1.5 md:p-2 rounded-full bg-black/40 text-white hover:bg-black/60"
         >
-          <ArrowLeft size={22} />
+          <ArrowLeft size={18} className="md:size-22" />
         </button>
 
-        <Container className="relative h-full flex flex-col justify-end pb-6">
-          <motion.h1 className="text-white text-3xl font-bold" style={{ y: titleY }}>
+        <Container className="relative h-full flex flex-col justify-end pb-4 md:pb-6">
+          <motion.h1 className="text-white text-xl md:text-3xl font-bold" style={{ y: titleY }}>
             {fundraiser.name}
           </motion.h1>
         </Container>
@@ -228,46 +228,46 @@ const LocationDetails = () => {
       <div>
         <Container>
           <motion.div
-            className="bg-white rounded-t-3xl shadow-md pt-6"
+            className="bg-white rounded-t-2xl md:rounded-t-3xl shadow-md pt-5 md:pt-6"
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
           >
             {/* Description Section */}
-            <div className="px-6 pb-6 border-b border-neutral-100">
-              <p className="text-neutral-700 leading-relaxed">{fundraiser.description}</p>
+            <div className="px-4 md:px-6 pb-5 md:pb-6 border-b border-neutral-100">
+              <p className="text-sm md:text-base text-neutral-700 leading-relaxed">{fundraiser.description}</p>
             </div>
 
             {/* Progress Section */}
-              <div className="px-6 py-6 border-b border-neutral-100 bg-white z-10 relative">
-                <div className="flex justify-between items-center mb-4">
-                  <h2 className="text-xl font-semibold">Campaign Progress</h2>
+              <div className="px-4 md:px-6 py-5 md:py-6 border-b border-neutral-100 bg-white z-10 relative">
+                <div className="flex justify-between items-center mb-3 md:mb-4">
+                  <h2 className="text-lg md:text-xl font-semibold">Campaign Progress</h2>
                   <motion.span
                     initial={{ opacity: 0, y: -5 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.2 }}
-                    className="text-primary-600 font-medium"
+                    className="text-primary-600 font-medium text-sm md:text-base"
                   >
                     {progressPercentage}% Complete
                   </motion.span>
                 </div>
 
                 {/* Animated ProgressBar with InView */}
-                <div className="relative w-full h-3 rounded-full bg-gray-200 overflow-hidden">
+                <div className="relative w-full h-2 md:h-3 rounded-full bg-gray-200 overflow-hidden">
                   <ProgressBar percentage={progressPercentage} />
                 </div>
 
                 {/* Stats Grid */}
-                <div className="grid grid-cols-2 gap-4 mt-6">
-                  <div className="bg-primary-50 rounded-lg p-4">
-                    <p className="text-neutral-500 text-sm">Raised</p>
-                    <p className="text-2xl font-bold text-primary-700">
+                <div className="grid grid-cols-2 gap-3 md:gap-4 mt-5 md:mt-6">
+                  <div className="bg-primary-50 rounded-lg p-3 md:p-4">
+                    <p className="text-neutral-500 text-xs md:text-sm">Raised</p>
+                    <p className="text-lg md:text-2xl font-bold text-primary-700">
                       <AnimatedCounter to={fundraiser.totalFundraiserDonations || 0} /> {getUnitType()}
                     </p>
                   </div>
-                  <div className="bg-primary-50 rounded-lg p-4">
-                    <p className="text-neutral-500 text-sm">Goal</p>
-                    <p className="text-2xl font-bold text-primary-700">
+                  <div className="bg-primary-50 rounded-lg p-3 md:p-4">
+                    <p className="text-neutral-500 text-xs md:text-sm">Goal</p>
+                    <p className="text-lg md:text-2xl font-bold text-primary-700">
                       <AnimatedCounter to={fundraiser.target || 0} /> {getUnitType()}
                     </p>
                   </div>
@@ -275,7 +275,7 @@ const LocationDetails = () => {
               </div>
 
             {/* Stats */}
-            <div className="px-6 pb-6 border-b border-neutral-100">
+            <div className="px-4 md:px-6 pb-5 md:pb-6 border-b border-neutral-100">
               <FundraiserStats 
                 stats={{
                   totalMeals: fundraiser.mealsDonated || 0,
@@ -286,16 +286,16 @@ const LocationDetails = () => {
             </div>
 
             {/* How It Works - Moved above Gallery */}
-            <div className="px-6 py-6 border-b border-neutral-100">
-              <h2 className="text-xl font-semibold mb-4">How It Works</h2>
-              <div className="space-y-4">
+            <div className="px-4 md:px-6 py-5 md:py-6 border-b border-neutral-100">
+              <h2 className="text-lg md:text-xl font-semibold mb-3 md:mb-4">How It Works</h2>
+              <div className="space-y-3 md:space-y-4">
                 {howItWorksSteps.map((step, index) => (
                   <div key={index} className="flex items-start">
-                    <div className="flex-shrink-0 bg-primary-100 rounded-full w-8 h-8 flex items-center justify-center mr-3">
-                      <span className="text-primary-700 font-semibold">{index + 1}</span>
+                    <div className="flex-shrink-0 bg-primary-100 rounded-full w-6 h-6 md:w-8 md:h-8 flex items-center justify-center mr-2 md:mr-3">
+                      <span className="text-primary-700 font-semibold text-xs md:text-sm">{index + 1}</span>
                     </div>
-                    <div className="bg-neutral-50 rounded-lg p-3 flex-grow">
-                      <p className="text-neutral-700">{step}</p>
+                    <div className="bg-neutral-50 rounded-lg p-2 md:p-3 flex-grow">
+                      <p className="text-neutral-700 text-xs md:text-sm">{step}</p>
                     </div>
                   </div>
                 ))}
@@ -303,13 +303,13 @@ const LocationDetails = () => {
             </div>
 
             {/* Donate Button - Moved above Gallery */}
-            <div className="p-6 bg-neutral-50 border-b border-neutral-100">
+            <div className="p-4 md:p-6 bg-neutral-50 border-b border-neutral-100">
               <Button
                 variant="primary"
                 size="lg"
                 fullWidth
                 onClick={handleDonate}
-                className="bg-gradient-to-r from-primary-500 to-primary-600 relative overflow-hidden"
+                className="bg-gradient-to-r from-primary-500 to-primary-600 relative overflow-hidden text-sm md:text-base py-2.5 md:py-3"
               >
                 <span className="relative z-10">Contribute Now</span>
                 <div className="absolute inset-0 bg-gradient-to-r from-white/10 via-white/20 to-white/10 animate-[shine_2s_infinite]" />
@@ -318,8 +318,8 @@ const LocationDetails = () => {
 
             {/* Gallery - Now after How It Works and Donate button */}
             {photoUrls.length > 0 && (
-              <div className="px-6 py-6">
-                <h2 className="text-xl font-semibold mb-4">Gallery</h2>
+              <div className="px-4 md:px-6 py-5 md:py-6">
+                <h2 className="text-lg md:text-xl font-semibold mb-3 md:mb-4">Gallery</h2>
                 <ImageGallery images={photoUrls} />
               </div>
             )}
@@ -335,14 +335,14 @@ const LocationDetails = () => {
         onConfirm={handleConfirmDonate}
         title="Donation Notice"
         message={
-          <p>
+          <p className="text-sm md:text-base">
             Right now, Ammucare accepts donations only from Indian Bank Accounts. 
             If you have an Indian bank account, please proceed.
           </p>
         }
         cancelText="Cancel"
         confirmText="Continue"
-        icon={<AlertTriangle className="w-6 h-6 text-amber-500" />}
+        icon={<AlertTriangle className="w-5 h-5 md:w-6 md:h-6 text-amber-500" />}
       />
     </div>
   );
