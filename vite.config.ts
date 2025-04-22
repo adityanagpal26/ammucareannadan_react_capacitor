@@ -7,4 +7,20 @@ export default defineConfig({
   optimizeDeps: {
     exclude: ['lucide-react'],
   },
+  // Add base path for Capacitor
+  base: './',
+  // Server options for mobile testing
+  server: {
+    host: true,
+    port: 3000,
+    strictPort: true,
+  },
+  // Build options for better mobile compatibility
+  build: {
+    outDir: 'dist',
+    minify: true,
+    commonjsOptions: {
+      transformMixedEsModules: true,
+    },
+  },
 });

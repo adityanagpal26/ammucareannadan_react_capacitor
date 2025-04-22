@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { motion, useScroll, useTransform, useAnimation, MotionValue } from 'framer-motion';
-import { ArrowLeft } from 'lucide-react';
+import { ArrowLeft, AlertTriangle } from 'lucide-react';
 import { useDonationStore } from '../store/donationStore';
 import { getFundraiser } from '../services/api';
 import { Fundraiser } from '../types';
@@ -10,6 +10,7 @@ import Button from '../components/common/Button';
 import FundraiserStats from '../components/ui/FundraiserStats';
 import ImageGallery from '../components/ui/ImageGallery';
 import HowItWorks from '../components/ui/HowItWorks';
+import AlertDialog from '../components/common/AlertDialog';
 
 // Define a custom type for the AnimatedCounter component
 interface AnimatedCounterProps {
@@ -70,6 +71,7 @@ const LocationDetails = () => {
   const [fundraiser, setFundraiser] = useState<Fundraiser | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [showAlert, setShowAlert] = useState(false);
 
   const imageScale = useTransform(scrollY, [0, 200], [1.1, 1]);
   const imageOpacity = useTransform(scrollY, [0, 200], [1, 0.6]);
@@ -100,11 +102,23 @@ const LocationDetails = () => {
   }, [locationId, flowType, setFundraiserId]);
 
   const handleDonate = () => {
+    // Show alert instead of navigating directly
+    setShowAlert(true);
+  };
+  
+  const handleConfirmDonate = () => {
+    // Close the alert and navigate to the next page
+    setShowAlert(false);
     if (fundraiser && flowType) {
-      // Ensure locationId is passed correctly in the URL
       navigate(`/donate/${flowType}/${locationId}`);
     }
   };
+  
+  const handleCancelDonate = () => {
+    // Just close the alert
+    setShowAlert(false);
+  };
+  
   const handleBack = () => navigate(-1);
   const getUnitType = () => fundraiser?.unitType || 'meals';
 
@@ -285,6 +299,23 @@ const LocationDetails = () => {
           </motion.div>
         </Container>
       </div>
+      
+      {/* Alert Dialog for Indian Bank Account */}
+      <AlertDialog
+        isOpen={showAlert}
+        onClose={handleCancelDonate}
+        onConfirm={handleConfirmDonate}
+        title="Donation Notice"
+        message={
+          <p>
+            Right now, Ammucare accepts donations only from Indian Bank Accounts. 
+            If you have an Indian bank account, please proceed.
+          </p>
+        }
+        cancelText="Cancel"
+        confirmText="Continue"
+        icon={<AlertTriangle className="w-6 h-6 text-amber-500" />}
+      />
     </div>
   );
 };

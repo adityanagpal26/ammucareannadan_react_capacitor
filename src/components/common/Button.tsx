@@ -1,5 +1,6 @@
 import { ReactNode } from 'react';
 import { motion } from 'framer-motion';
+import { isNativePlatform } from '../../utils/capacitor';
 
 interface ButtonProps {
   children: ReactNode;
@@ -28,7 +29,8 @@ const Button = ({
   iconPosition = 'left',
   animate = false,
 }: ButtonProps) => {
-  const baseStyles = 'rounded-lg font-medium transition-colors flex items-center justify-center';
+  const isMobile = isNativePlatform();
+  const baseStyles = 'rounded-lg font-medium transition-colors flex items-center justify-center tap-highlight-transparent';
   
   const variantStyles = {
     primary: 'bg-primary-500 text-white hover:bg-primary-600 active:bg-primary-700',
@@ -54,21 +56,38 @@ const Button = ({
   const iconStyles = 'flex items-center';
   const iconSpacing = iconPosition === 'left' ? 'mr-2' : 'ml-2';
   
-  const ButtonComponent = animate ? motion.button : 'button';
+  // Adjust animation for better mobile performance
+  const useAnimation = animate || isMobile;
+  const ButtonComponent = useAnimation ? motion.button : 'button';
   
-  const animationProps = animate
+  // Subtle animation on mobile for better feedback
+  const animationProps = useAnimation
     ? {
-        whileHover: { scale: 1.05 },
-        whileTap: { scale: 0.97 },
-        transition: { type: 'spring', stiffness: 400, damping: 17 },
+        whileHover: isMobile ? {} : { scale: 1.05 },
+        whileTap: { scale: isMobile ? 0.95 : 0.97 },
+        transition: { 
+          type: 'spring', 
+          stiffness: isMobile ? 500 : 400, 
+          damping: isMobile ? 20 : 17 
+        },
       }
     : {};
+  
+  const handleClick = (e: React.MouseEvent) => {
+    if (onClick && !disabled) {
+      // Add vibration feedback on mobile
+      if (isMobile && 'navigator' in window && navigator.vibrate) {
+        navigator.vibrate(10); // Subtle 10ms vibration
+      }
+      onClick();
+    }
+  };
   
   return (
     <ButtonComponent
       type={type}
       className={buttonStyles}
-      onClick={onClick}
+      onClick={handleClick}
       disabled={disabled}
       {...animationProps}
     >

@@ -1,6 +1,7 @@
 import { ArrowLeft } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
+import { isNativePlatform, isIOS } from '../../utils/capacitor';
 
 interface HeaderProps {
   title: string;
@@ -16,6 +17,8 @@ const Header = ({
   hideLogo = false,
 }: HeaderProps) => {
   const navigate = useNavigate();
+  const isMobile = isNativePlatform();
+  const isIosDevice = isIOS();
   
   const handleGoBack = () => {
     navigate(-1);
@@ -33,7 +36,7 @@ const Header = ({
   
   return (
     <motion.header
-      className={`relative ${backgroundImage ? 'py-12' : 'py-4'} ${backgroundImage ? 'mb-6' : 'mb-4'}`}
+      className={`relative ${backgroundImage ? 'py-12' : 'py-4'} ${backgroundImage ? 'mb-6' : 'mb-4'} ${isIosDevice ? 'pt-[calc(var(--ion-safe-area-top)+1rem)]' : ''}`}
       style={headerStyle}
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
@@ -48,14 +51,14 @@ const Header = ({
                 backgroundImage
                   ? 'bg-white/20 text-white hover:bg-white/30'
                   : 'bg-neutral-100 text-neutral-700 hover:bg-neutral-200'
-              } transition-colors`}
+              } transition-colors tap-highlight-transparent`}
               aria-label="Go back"
             >
               <ArrowLeft size={20} />
             </button>
           )}
           
-          <h1 className={`text-xl font-semibold ${textColor}`}>{title}</h1>
+          <h1 className={`text-xl font-semibold ${textColor} ${isMobile ? 'line-clamp-1' : ''}`}>{title}</h1>
           
           {!hideLogo && (
             <div className="ml-auto">
