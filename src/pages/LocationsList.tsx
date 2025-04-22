@@ -197,8 +197,8 @@ const LocationsList = () => {
                       style={{ backgroundImage: `url(${location.photo.photoUrl})` }}
                     />
                     
-                    {/* Gradient Overlay */}
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent" />
+                    {/* Gradient Overlay 
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent" /> */}
                     
                     {/* Content */}
                     <div className="absolute bottom-0 left-0 right-0 p-2 sm:p-3 md:p-4 text-white">

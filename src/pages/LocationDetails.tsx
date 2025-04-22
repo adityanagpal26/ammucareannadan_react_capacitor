@@ -207,7 +207,7 @@ const LocationDetails = () => {
               opacity: imageOpacity,
             }}
           />
-          <div className="absolute inset-0 bg-gradient-to-b from-black/30 to-black/70" />
+        {/*  <div className="absolute inset-0 bg-gradient-to-b from-black/30 to-black/70" /> */}
         </motion.div>
 
         <button
